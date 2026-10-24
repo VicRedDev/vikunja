@@ -185,8 +185,7 @@ const to = ref<Date | null>(null)
 const comment = ref('')
 const isSaving = ref(false)
 
-// Task and project are mutually exclusive — selecting one clears the other,
-// so applyTarget never picks a stale target the user has since changed.
+// Mutually exclusive so applyTarget never picks a stale target.
 watch(selectedTask, task => {
 	if (task !== null) {
 		selectedProject.value = null
@@ -218,7 +217,6 @@ function smartFill() {
 	to.value = new Date()
 }
 
-// Neither set is a valid entry only its author sees.
 function applyTarget(payload: TimeEntryWritable) {
 	if (props.taskId !== undefined) {
 		payload.task_id = props.taskId
