@@ -42,6 +42,7 @@ type userInfoBody struct {
 	AuthProvider        string                      `json:"auth_provider" readOnly:"true" doc:"The name of the source the user authenticated with: 'local', 'ldap', or the configured OpenID provider name."`
 	IsAdmin             bool                        `json:"is_admin" readOnly:"true" doc:"True if the user is an instance administrator."`
 	PendingEmail        string                      `json:"pending_email,omitempty" readOnly:"true" doc:"A new email address waiting for confirmation, if the user requested a change. Empty otherwise."`
+	CanCreateProjects   bool                        `json:"can_create_projects" readOnly:"true" doc:"True if the user may create projects (see service.projectcreationusers)."`
 }
 
 // userAvatarProviderBody is the get/set body for the user's avatar provider.
@@ -181,6 +182,11 @@ func userShow(ctx context.Context, _ *struct{}) (*singleBody[userInfoBody], erro
 		IsLocalUser:         u.Issuer == user.IssuerLocal,
 		IsAdmin:             u.IsAdmin,
 		PendingEmail:        u.PendingEmail,
+	}
+
+	info.CanCreateProjects, err = models.CanCreateProjects(s, a)
+	if err != nil {
+		return nil, translateDomainError(err)
 	}
 
 	// nolint:contextcheck // openid.GetAllProviders/Issuer (called via shared) take

@@ -75,6 +75,14 @@ func insertFromStructureWithFileProvider(str []*models.ProjectWithTasksAndBucket
 		return err
 	}
 
+	canCreate, err := models.CanCreateProjects(s, importer)
+	if err != nil {
+		return err
+	}
+	if !canCreate {
+		return models.ErrGenericForbidden{}
+	}
+
 	// Failed transactions roll back file rows, not blobs written before commit.
 	createdFiles := &[]int64{}
 

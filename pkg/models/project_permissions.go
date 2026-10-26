@@ -280,6 +280,9 @@ func (p *Project) CanCreate(s *xorm.Session, a web.Auth) (bool, error) {
 	if isInstanceAdmin(s, a) {
 		return true, nil
 	}
+	if canCreate, err := CanCreateProjects(s, a); err != nil || !canCreate {
+		return false, err
+	}
 	if pid := p.parentID(); pid > 0 {
 		parent := &Project{ID: pid}
 		return parent.CanWrite(s, a)

@@ -77,6 +77,7 @@
 				{{ $t('menu.share') }}
 			</DropdownItem>
 			<DropdownItem
+				v-if="authStore.canCreateProjects"
 				:to="{ name: 'project.settings.duplicate', params: { projectId: project.id } }"
 				icon="paste"
 			>
@@ -105,6 +106,7 @@
 				{{ $t('project.webhooks.title') }}
 			</DropdownItem>
 			<DropdownItem
+				v-if="authStore.canCreateProjects"
 				:to="{ name: 'project.createFromParent', params: { parentProjectId: project.id } }"
 				icon="layer-group"
 			>

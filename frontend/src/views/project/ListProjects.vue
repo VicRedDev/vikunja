@@ -20,6 +20,7 @@
 					{{ $t('filters.create.title') }}
 				</XButton>
 				<XButton
+					v-if="authStore.canCreateProjects"
 					v-cy="'new-project'"
 					:to="{name: 'project.create'}"
 					icon="plus"
@@ -48,8 +49,10 @@ import {useStorage} from '@vueuse/core'
 
 import {useProjects} from '@/composables/useProjects'
 import {useDelayedLoading} from '@/composables/useDelayedLoading'
+import {useAuthStore} from '@/stores/auth'
 
 const {t} = useI18n()
+const authStore = useAuthStore()
 const projectList = useProjects()
 
 useTitle(() => t('project.title'))

@@ -162,6 +162,8 @@ export const useAuthStore = defineStore('auth', () => {
 	// The JWT carries id and username, so the header renders before GET /user answers.
 	const info = computed(() => currentAccount.value ?? (session.value ? userFromClaims(session.value) : null))
 	const settings = computed(() => normalizeUserSettings(account.data.value?.settings))
+	// Until GET /user answers, assume yes; the API enforces it anyway.
+	const canCreateProjects = computed(() => currentAccount.value?.can_create_projects ?? true)
 	watch(() => settings.value.frontend_settings.desktop_quick_entry_shortcut, shortcut => {
 		window.vikunjaDesktop?.updateQuickEntryShortcut(shortcut || '')
 	}, {immediate: true})
@@ -636,6 +638,7 @@ export const useAuthStore = defineStore('auth', () => {
 		currentAccount,
 		info: readonly(info),
 		settings: readonly(settings),
+		canCreateProjects,
 
 		currentSessionId: readonly(currentSessionId),
 		lastUserInfoRefresh: readonly(lastUserInfoRefresh),

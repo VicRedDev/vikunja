@@ -46,6 +46,10 @@ type ProjectDuplicate struct {
 
 // CanCreate checks if a user has the permission to duplicate a project
 func (pd *ProjectDuplicate) CanCreate(s *xorm.Session, a web.Auth) (canCreate bool, err error) {
+	if canCreate, err = CanCreateProjects(s, a); err != nil || !canCreate {
+		return false, err
+	}
+
 	// Project Exists + user has read access to project
 	pd.Project = &Project{ID: pd.ProjectID}
 	canRead, _, err := pd.Project.CanRead(s, a)

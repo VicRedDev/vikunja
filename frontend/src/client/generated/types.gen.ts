@@ -3249,6 +3249,10 @@ export type UserInfoBody = {
      */
     readonly id?: number;
     /**
+     * True if the user may create projects (see service.projectcreationusers).
+     */
+    readonly can_create_projects?: boolean;
+    /**
      * True if the user is an instance administrator.
      */
     readonly is_admin?: boolean;

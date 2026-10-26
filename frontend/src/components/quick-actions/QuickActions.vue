@@ -399,7 +399,7 @@ const hintText = computed(() => {
 const availableCmds = computed(() => {
 	return [
 		commands.value.newTask,
-		commands.value.newProject,
+		...(authStore.canCreateProjects ? [commands.value.newProject] : []),
 		commands.value.newTeam,
 	]
 })
